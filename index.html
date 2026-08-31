@@ -27,7 +27,7 @@ main{padding:30px;max-width:1450px;width:100%;margin:auto}.top{display:flex;just
 </div>
 
 <div id="appScreen" class="app hidden">
-<aside><div class="brand">Study Rats ♡</div><div class="tag">seu cantinho de estudos</div><div class="nav">
+<aside><div class="brand">Study Rats ♡</div><div class="tag">seu cantinho de estudos</div><div style="margin:0 8px 16px"><div class="tag" style="margin:0 0 6px">grupo atual · troque quando quiser</div><select id="groupPicker" onchange="switchGroup(this.value)" style="background:#ffffff12;color:#fff;border-color:#ffffff33;margin:0"><option value="">Sem grupo</option></select></div><div class="nav">
 <button class="active" data-page="home">🏠 Visão geral</button><button data-page="ranking">🏆 Rankings</button><button data-page="pomodoro">🍅 Pomodoro</button><button data-page="register">✍️ Registrar</button><button data-page="challenges">🎯 Desafios</button><button data-page="calendar">🗓️ Calendário</button><button data-page="room">📹 Study room</button><button data-page="settings">⚙️ Configurações</button></div>
 <div class="side-user"><div class="between"><span id="sideName">...</span><button class="btn ghost" style="color:#fff;border-color:#ffffff33;padding:6px 8px" onclick="logout()">sair</button></div><div class="small" style="color:#eadbd4;margin-top:6px" id="groupSide">Sem grupo</div></div></aside>
 <main>
@@ -53,14 +53,14 @@ main{padding:30px;max-width:1450px;width:100%;margin:auto}.top{display:flex;just
 <section id="challenges" class="page"><div class="grid"><div class="card s6"><h2>🎯 Desafios</h2><div id="challengeList"></div></div><div class="card s6"><h2>🍂 Temporada</h2><p class="muted">A pontuação do grupo pode ser usada para temporadas e desafios personalizados.</p><div class="pill">Study Rats · 2026</div></div></div></section>
 <section id="calendar" class="page"><div class="card"><div class="between"><h2>🗓️ Calendário</h2><span class="pill" id="calTitle"></span></div><div id="calendarGrid" style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-top:14px"></div></div></section>
 <section id="room" class="page"><div class="card"><div class="between"><h2>📹 Study room</h2><span class="pill">Jitsi</span></div><p class="muted">Crie uma sala e compartilhe o nome com as meninas.</p><div class="actions"><input id="roomName" placeholder="study-rats-patologia" style="max-width:400px"><button class="btn primary" onclick="openRoom()">abrir sala</button></div><div class="callbox" style="margin-top:16px"><div><div style="font-size:55px">📹</div><h3>Study with me ♡</h3><p class="muted">A videochamada abre em uma nova aba.</p></div></div></div></section>
-<section id="settings" class="page"><div class="grid"><div class="card s6"><h2>👯 Seu grupo</h2><div id="groupInfo"></div><div class="actions" style="margin-top:12px"><button class="btn primary" onclick="openGroup('create')">criar outro</button><button class="btn soft" onclick="openGroup('join')">entrar em outro</button></div></div><div class="card s6"><h2>👤 Seu perfil</h2><div class="field"><label>Nome<input id="profileName"></label></div><button class="btn primary" onclick="saveProfile()">salvar nome</button></div><div class="card s12"><h2>🔄 Sincronização</h2><p class="muted">Conectado ao banco online. Alterações em <b>study_logs</b> são recebidas em tempo real enquanto você estiver com o site aberto.</p></div></div></section>
+<section id="settings" class="page"><div class="grid"><div class="card s6"><h2>👯 Seu grupo</h2><div id="groupInfo"></div><div class="small" style="margin-top:6px">Você pode participar de vários grupos ao mesmo tempo. O ranking e os estudos mudam conforme o grupo selecionado.</div><div id="allGroups" style="margin-top:14px"></div><div class="actions" style="margin-top:12px"><button class="btn primary" onclick="openGroup('create')">criar outro</button><button class="btn soft" onclick="openGroup('join')">entrar em outro</button></div></div><div class="card s6"><h2>👤 Seu perfil</h2><div class="field"><label>Nome<input id="profileName"></label></div><button class="btn primary" onclick="saveProfile()">salvar nome</button></div><div class="card s12"><h2>🔄 Sincronização</h2><p class="muted">Conectado ao banco online. Alterações em <b>study_logs</b> são recebidas em tempo real enquanto você estiver com o site aberto.</p></div></div></section>
 </main></div>
 
 <div class="modal" id="groupModal"><div class="modalbox"><div class="between"><h2 id="groupTitle">Grupo</h2><button class="btn soft" onclick="closeGroup()">×</button></div><div id="groupCreate"><div class="field"><label>Nome do grupo<input id="groupName" placeholder="Study Rats — Medicina"></label></div><button class="btn primary" onclick="createGroup()">criar grupo ♡</button></div><div id="groupJoin" class="hidden"><div class="field"><label>Código de convite<input id="inviteCode" placeholder="RATS-7K4P" style="text-transform:uppercase"></label></div><button class="btn primary" onclick="joinGroup()">entrar ♡</button></div><p class="small" id="groupMsg"></p></div></div>
 <div class="toast" id="toast"></div>
 
 <script>
-const SUPABASE_URL="https://reobozxxobmphssgvvkz.supabase.co";
+const SUPABASE_URL="https://reobozxxobmphssgvvkz.supabase.co"; 
 const SUPABASE_KEY="sb_publishable_7yRXWSBmqZpOqUt7YTFMlA_g-q8Smvd";
 const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 let user=null,group=null,members=[],logs=[],rules={minute:1,question:2,lesson:30,pomodoro:10,perfect:25,review:20,simulado:50}, realtime=null;
@@ -73,10 +73,37 @@ async function submitAuth(){let mode=$("authBtn").dataset.mode||"login",email=$(
 function msg(id,t){$(id).textContent=t}
 async function boot(session){if(!session)return;user=session.user;$("authScreen").classList.add("hidden");$("appScreen").classList.remove("hidden");await loadProfile();await loadGroup();fDate.value=today();setupRealtime()}
 async function loadProfile(){let {data}=await sb.from("profiles").select("*").eq("id",user.id).maybeSingle();if(data){$("sideName").textContent=data.display_name;$("hello").textContent=`Oi, ${data.display_name} ♡`;$("profileName").value=data.display_name}else{let n=user.user_metadata?.display_name||user.email.split("@")[0];await sb.from("profiles").insert({id:user.id,display_name:n});$("sideName").textContent=n;$("hello").textContent=`Oi, ${n} ♡`;$("profileName").value=n}}
-async function loadGroup(){let {data,error}=await sb.from("group_members").select("group_id,groups(id,name,invite_code)").eq("user_id",user.id);if(error||!data?.length){group=null;showNoGroup();return}group=data[0].groups;$("groupSide").textContent=group.name+" · "+group.invite_code;$("noGroup").classList.add("hidden");$("homeContent").classList.remove("hidden");await loadData()}
-function showNoGroup(){$("noGroup").classList.remove("hidden");$("homeContent").classList.add("hidden");$("groupSide").textContent="Sem grupo"}
+async function loadGroup(){
+  let {data,error}=await sb.from("group_members").select("group_id,groups(id,name,invite_code)").eq("user_id",user.id);
+  if(error){console.error(error);group=null;showNoGroup();return}
+  const groups=(data||[]).map(x=>x.groups).filter(Boolean);
+  renderGroupPicker(groups);
+  if(!groups.length){group=null;showNoGroup();return}
+  const saved=localStorage.getItem("study_rats_group");
+  const chosen=groups.find(g=>g.id===saved)||groups[0];
+  await selectGroup(chosen.id, groups);
+}
+function renderGroupPicker(groups){
+  const picker=$("groupPicker");
+  if(picker) picker.innerHTML=groups.map(g=>`<option value="${g.id}">${escapeHtml(g.name)}</option>`).join("")||'<option value="">Sem grupo</option>';
+  const current=group?.id; if(picker&&current) picker.value=current;
+  $("allGroups").innerHTML=groups.length?groups.map(g=>`<div class="between" style="padding:10px 0;border-bottom:1px solid var(--line)"><div><b>${escapeHtml(g.name)}</b><div class="small">${escapeHtml(g.invite_code)}</div></div><div class="actions"><button class="btn soft" onclick='switchGroup(${JSON.stringify(g.id)})'>abrir</button><button class="btn ghost" onclick='copyCode(${JSON.stringify(g.invite_code)})'>copiar código</button></div></div>`).join(""): '<div class="muted">Você ainda não participa de nenhum grupo.</div>';
+}
+async function selectGroup(id, groups){
+  const list=groups||await getMyGroups(); const g=list.find(x=>x.id===id); if(!g)return;
+  group=g; localStorage.setItem("study_rats_group",g.id);
+  $("groupPicker").value=g.id; $("groupSide").textContent=g.name+" · "+g.invite_code;
+  $("groupInfo").innerHTML=`<div class="between"><div><b style="font-size:18px">${escapeHtml(g.name)}</b><div class="small">Código de convite</div></div><span class="pill">${escapeHtml(g.invite_code)}</span></div><div class="actions" style="margin-top:12px"><button class="btn soft" onclick='copyCode(${JSON.stringify(g.invite_code)})'>📋 Copiar código</button><button class="btn ghost" onclick='shareGroup(${JSON.stringify(g.name)}, ${JSON.stringify(g.invite_code)})'>compartilhar</button></div>`;
+  $("noGroup").classList.add("hidden"); $("homeContent").classList.remove("hidden"); await loadData();
+}
+async function getMyGroups(){let {data}=await sb.from("group_members").select("group_id,groups(id,name,invite_code)").eq("user_id",user.id);return (data||[]).map(x=>x.groups).filter(Boolean)}
+async function switchGroup(id){if(!id)return; await selectGroup(id); renderAll();}
+function escapeHtml(v){return String(v??"").replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]))}
+async function copyCode(code){try{await navigator.clipboard.writeText(code);toast("Código copiado! ♡")}catch(e){prompt("Copie o código:",code)}}
+async function shareGroup(name,code){const text=`Entre no meu grupo Study Rats!\n\n${name}\nCódigo: ${code}`;if(navigator.share){try{await navigator.share({title:"Study Rats",text})}catch(e){}}else{await copyCode(code);}}
+function showNoGroup(){$("noGroup").classList.remove("hidden");$("homeContent").classList.add("hidden");$("groupSide").textContent="Sem grupo";if($("groupPicker"))$("groupPicker").innerHTML="<option value=\"\">Sem grupo</option>";if($("groupInfo"))$("groupInfo").innerHTML="<div class=\"muted\">Nenhum grupo selecionado.</div>";if($("allGroups"))$("allGroups").innerHTML=""}
 async function loadData(){let r=await Promise.all([sb.from("group_members").select("user_id,profiles(display_name)").eq("group_id",group.id),sb.from("study_logs").select("*").eq("group_id",group.id).order("created_at",{ascending:false}),sb.from("point_rules").select("*").eq("group_id",group.id).maybeSingle()]);members=r[0].data||[];logs=r[1].data||[];if(r[2].data)rules=r[2].data;renderAll()}
-function setupRealtime(){if(realtime)sb.removeChannel(realtime);realtime=sb.channel("study-rats-live").on("postgres_changes",{event:"*",schema:"public",table:"study_logs"},async payload=>{if(group&&payload.new?.group_id===group.id||payload.old?.group_id===group.id)await loadData()}).on("postgres_changes",{event:"*",schema:"public",table:"group_members"},async payload=>{if(group&&payload.new?.group_id===group.id||payload.old?.group_id===group.id)await loadData()}).subscribe()}
+function setupRealtime(){if(realtime)sb.removeChannel(realtime);realtime=sb.channel("study-rats-live").on("postgres_changes",{event:"*",schema:"public",table:"study_logs"},async payload=>{if(group&&((payload.new?.group_id===group.id)||(payload.old?.group_id===group.id)))await loadData()}).on("postgres_changes",{event:"*",schema:"public",table:"group_members"},async payload=>{if(group&&((payload.new?.group_id===group.id)||(payload.old?.group_id===group.id))){await loadData()}else{await loadGroup()}}).subscribe()}
 function nameOf(id){return members.find(x=>x.user_id==id)?.profiles?.display_name||"Study Rat"}
 function stats(uid,p){let st=periodStart(p),e=new Date();return logs.filter(s=>s.user_id==uid&&new Date(s.study_date+"T12:00")>=st&&new Date(s.study_date+"T12:00")<=e).reduce((a,s)=>(a.p+=pts(s),a.m+=+s.minutes,a.q+=+s.questions,a.l+=+s.lessons,a),{p:0,m:0,q:0,l:0})}
 function streak(uid){let n=0,d=new Date();while(logs.some(s=>s.user_id==uid&&s.study_date==d.toISOString().slice(0,10))){n++;d.setDate(d.getDate()-1)}return n}
@@ -89,8 +116,26 @@ async function saveStudy(){if(!group)return toast("Entre em um grupo primeiro.")
 async function saveProfile(){let n=$("profileName").value.trim();if(!n)return;let {error}=await sb.from("profiles").update({display_name:n}).eq("id",user.id);if(error)return toast(error.message);await loadProfile();await loadData();toast("Perfil salvo ♡")}
 function openGroup(mode){$("groupModal").classList.add("open");$("groupCreate").classList.toggle("hidden",mode!="create");$("groupJoin").classList.toggle("hidden",mode!="join");$("groupTitle").textContent=mode=="create"?"Criar grupo":"Entrar com código";$("groupMsg").textContent=""}
 function closeGroup(){$("groupModal").classList.remove("open")}
-async function createGroup(){let n=$("groupName").value.trim();if(!n)return;let {data,error}=await sb.rpc("create_study_group",{p_name:n});if(error)return msg("groupMsg",error.message);closeGroup();await loadGroup();toast("Grupo criado! ♡")}
-async function joinGroup(){let c=$("inviteCode").value.trim().toUpperCase();if(!c)return;let {data,error}=await sb.rpc("join_study_group",{p_code:c});if(error)return msg("groupMsg",error.message);closeGroup();await loadGroup();toast("Você entrou no grupo! ♡")}
+async function createGroup(){
+  let n=$("groupName").value.trim();
+  if(!n)return msg("groupMsg","Digite um nome para o grupo.");
+  let {data,error}=await sb.rpc("create_study_group",{p_name:n});
+  if(error)return msg("groupMsg",error.message);
+  closeGroup();
+  if(data?.id)localStorage.setItem("study_rats_group",data.id);
+  await loadGroup();
+  toast("Grupo criado! ♡");
+}
+async function joinGroup(){
+  let c=$("inviteCode").value.trim().toUpperCase();
+  if(!c)return msg("groupMsg","Digite o código do grupo.");
+  let {data,error}=await sb.rpc("join_study_group",{p_code:c});
+  if(error)return msg("groupMsg",error.message);
+  closeGroup();
+  if(data?.id)localStorage.setItem("study_rats_group",data.id);
+  await loadGroup();
+  toast("Você entrou no grupo! ♡");
+}
 async function logout(){await sb.auth.signOut();location.reload()}
 function showPage(id){document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));$(id).classList.add("active");document.querySelectorAll(".nav button").forEach(x=>x.classList.toggle("active",x.dataset.page==id));renderAll()}
 document.querySelectorAll(".nav button").forEach(b=>b.onclick=()=>showPage(b.dataset.page));
