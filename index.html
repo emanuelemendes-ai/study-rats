@@ -1,147 +1,3234 @@
+```html
 <!doctype html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Study Rats ♡</title>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
-:root{--bg:#f6eee8;--surface:#fffaf6;--surface2:#f0dfd6;--wine:#70283b;--wine2:#91445a;--brown:#4d3632;--muted:#91766d;--line:#e7d5cb;--gold:#b18a5a;--shadow:0 18px 45px #54352b16;--r:24px}
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 15% 5%,#fff8f1 0,#f6eee8 38%,#eadbd1 100%);color:var(--brown);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,input,select{font:inherit}button{cursor:pointer;border:0}
-.hidden{display:none!important}.center{min-height:100vh;display:grid;place-items:center;padding:20px}.auth{max-width:470px;width:100%;background:#fffaf6;border:1px solid var(--line);box-shadow:var(--shadow);border-radius:28px;padding:30px}.logo{font:700 34px Georgia,serif;color:var(--wine)}.sub{font-size:12px;color:var(--muted);margin:4px 0 22px}.tabs{display:flex;gap:5px;background:var(--surface2);padding:5px;border-radius:14px;margin-bottom:17px}.tabs button{flex:1;padding:10px;border-radius:10px;background:transparent;color:var(--wine)}.tabs button.active{background:#fff;color:var(--wine);font-weight:700}.field{margin:10px 0}label{font-size:11px;color:var(--muted)}input,select{display:block;width:100%;margin-top:5px;border:1px solid var(--line);background:#fffdf9;border-radius:12px;padding:11px;color:var(--brown);outline:0}input:focus{border-color:var(--wine2)}.btn{padding:11px 15px;border-radius:13px}.primary{background:var(--wine);color:#fff}.soft{background:var(--surface2);color:var(--wine)}.ghost{background:transparent;color:var(--wine);border:1px solid var(--line)}
-.app{min-height:100vh;display:grid;grid-template-columns:255px 1fr}aside{background:linear-gradient(180deg,#522d34,#693441);color:#fff7f1;padding:28px 18px;position:sticky;top:0;height:100vh}.brand{font:700 28px Georgia,serif;margin:0 8px}.tag{font-size:10px;opacity:.65;margin:3px 8px 28px}.nav button{width:100%;background:transparent;color:#f9e9e1;text-align:left;padding:13px 14px;border-radius:14px;margin:2px 0}.nav button.active,.nav button:hover{background:#ffffff17}.side-user{position:absolute;bottom:22px;left:18px;right:18px;background:#ffffff12;padding:12px;border-radius:16px;font-size:12px}.avatar{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:#e7c8bd;color:var(--wine);font-weight:800;flex:none}
-main{padding:30px;max-width:1450px;width:100%;margin:auto}.top{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;margin-bottom:22px}.eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:10px;color:var(--muted)}h1,h2,h3{font-family:Georgia,serif}h1{font-size:37px;margin:4px 0;color:#4c2d2d}h2{font-size:23px;margin:0 0 15px}.muted{color:var(--muted);font-size:13px}.actions{display:flex;gap:8px;flex-wrap:wrap}.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}.card{background:#fffaf6e8;border:1px solid var(--line);box-shadow:var(--shadow);border-radius:var(--r);padding:20px}.s3{grid-column:span 3}.s4{grid-column:span 4}.s5{grid-column:span 5}.s6{grid-column:span 6}.s7{grid-column:span 7}.s8{grid-column:span 8}.s12{grid-column:span 12}.kpi{display:flex;justify-content:space-between;align-items:center}.num{font-size:30px;font-weight:850;color:var(--wine)}.ico{width:44px;height:44px;border-radius:15px;background:#f0ded5;display:grid;place-items:center}.label{font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted)}.between{display:flex;justify-content:space-between;gap:10px;align-items:center}.pill{font-size:11px;background:#f1e1d8;padding:6px 9px;border-radius:99px;color:var(--wine)}.board{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}.board:last-child{border:0}.pts{margin-left:auto;color:var(--wine);font-weight:800}.rank{width:24px;text-align:center}.bar{height:8px;background:#eaded7;border-radius:99px;overflow:hidden}.bar b{display:block;height:100%;background:var(--wine);border-radius:99px}.page{display:none}.page.active{display:block}.activity{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}.small{font-size:11px;color:var(--muted)}table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:12px;border-bottom:1px solid var(--line);font-size:13px}th{font-size:10px;color:var(--muted);text-transform:uppercase}.form{display:grid;grid-template-columns:repeat(2,1fr);gap:11px}.timer{text-align:center;font-size:68px;font-weight:850;color:var(--wine);margin:10px}.timerBtns{display:flex;justify-content:center;gap:8px}.presets{display:flex;gap:7px;justify-content:center;margin-top:10px}.presets button{background:#f0dfd6;color:var(--wine);border-radius:11px;padding:8px 11px}.badges{display:flex;flex-wrap:wrap;gap:9px}.badge{padding:9px 11px;background:#f0dfd6;border-radius:13px;font-size:12px}.toast{position:fixed;right:20px;bottom:20px;background:#522d34;color:white;padding:13px 16px;border-radius:14px;display:none;z-index:20}.modal{position:fixed;inset:0;background:#38232288;display:none;place-items:center;padding:20px;z-index:10}.modal.open{display:grid}.modalbox{background:var(--surface);padding:23px;border-radius:24px;max-width:520px;width:100%}.callbox{aspect-ratio:16/9;border-radius:18px;background:#e9dbd3;display:grid;place-items:center;text-align:center;padding:25px}
-@media(max-width:1000px){.app{grid-template-columns:1fr}aside{height:auto;position:relative}.nav{display:flex;overflow:auto}.nav button{min-width:max-content}.side-user{display:none}.s3,.s4,.s5,.s6,.s7,.s8{grid-column:span 12}}@media(max-width:600px){main{padding:16px}.top{flex-direction:column}.form{grid-template-columns:1fr}.timer{font-size:50px}}
+:root{
+--bg:#f6eee8;
+--surface:#fffaf6;
+--surface2:#f0dfd6;
+--wine:#70283b;
+--wine2:#91445a;
+--brown:#4d3632;
+--muted:#91766d;
+--line:#e7d5cb;
+--gold:#b18a5a;
+--shadow:0 18px 45px #54352b16;
+--r:24px
+}
+
+*{box-sizing:border-box}
+
+body{
+margin:0;
+background:radial-gradient(circle at 15% 5%,#fff8f1 0,#f6eee8 38%,#eadbd1 100%);
+color:var(--brown);
+font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif
+}
+
+button,input,select{font:inherit}
+button{cursor:pointer;border:0}
+
+.hidden{display:none!important}
+
+.center{
+min-height:100vh;
+display:grid;
+place-items:center;
+padding:20px
+}
+
+.auth{
+max-width:470px;
+width:100%;
+background:#fffaf6;
+border:1px solid var(--line);
+box-shadow:var(--shadow);
+border-radius:28px;
+padding:30px
+}
+
+.logo{
+font:700 34px Georgia,serif;
+color:var(--wine)
+}
+
+.sub{
+font-size:12px;
+color:var(--muted);
+margin:4px 0 22px
+}
+
+.tabs{
+display:flex;
+gap:5px;
+background:var(--surface2);
+padding:5px;
+border-radius:14px;
+margin-bottom:17px
+}
+
+.tabs button{
+flex:1;
+padding:10px;
+border-radius:10px;
+background:transparent;
+color:var(--wine)
+}
+
+.tabs button.active{
+background:#fff;
+color:var(--wine);
+font-weight:700
+}
+
+.field{margin:10px 0}
+
+label{
+font-size:11px;
+color:var(--muted)
+}
+
+input,select{
+display:block;
+width:100%;
+margin-top:5px;
+border:1px solid var(--line);
+background:#fffdf9;
+border-radius:12px;
+padding:11px;
+color:var(--brown);
+outline:0
+}
+
+input:focus{border-color:var(--wine2)}
+
+.btn{
+padding:11px 15px;
+border-radius:13px
+}
+
+.primary{
+background:var(--wine);
+color:#fff
+}
+
+.soft{
+background:var(--surface2);
+color:var(--wine)
+}
+
+.ghost{
+background:transparent;
+color:var(--wine);
+border:1px solid var(--line)
+}
+
+.danger{
+background:#fff0ef;
+color:#b42318;
+border:1px solid #e2a8a3
+}
+
+.app{
+min-height:100vh;
+display:grid;
+grid-template-columns:255px 1fr
+}
+
+aside{
+background:linear-gradient(180deg,#522d34,#693441);
+color:#fff7f1;
+padding:28px 18px;
+position:sticky;
+top:0;
+height:100vh
+}
+
+.brand{
+font:700 28px Georgia,serif;
+margin:0 8px
+}
+
+.tag{
+font-size:10px;
+opacity:.65;
+margin:3px 8px 28px
+}
+
+.nav button{
+width:100%;
+background:transparent;
+color:#f9e9e1;
+text-align:left;
+padding:13px 14px;
+border-radius:14px;
+margin:2px 0
+}
+
+.nav button.active,
+.nav button:hover{
+background:#ffffff17
+}
+
+.side-user{
+position:absolute;
+bottom:22px;
+left:18px;
+right:18px;
+background:#ffffff12;
+padding:12px;
+border-radius:16px;
+font-size:12px
+}
+
+.avatar{
+width:38px;
+height:38px;
+border-radius:50%;
+display:grid;
+place-items:center;
+background:#e7c8bd;
+color:var(--wine);
+font-weight:800;
+flex:none
+}
+
+main{
+padding:30px;
+max-width:1450px;
+width:100%;
+margin:auto
+}
+
+.top{
+display:flex;
+justify-content:space-between;
+align-items:flex-start;
+gap:18px;
+margin-bottom:22px
+}
+
+.eyebrow{
+text-transform:uppercase;
+letter-spacing:.12em;
+font-size:10px;
+color:var(--muted)
+}
+
+h1,h2,h3{font-family:Georgia,serif}
+
+h1{
+font-size:37px;
+margin:4px 0;
+color:#4c2d2d
+}
+
+h2{
+font-size:23px;
+margin:0 0 15px
+}
+
+.muted{
+color:var(--muted);
+font-size:13px
+}
+
+.actions{
+display:flex;
+gap:8px;
+flex-wrap:wrap
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(12,1fr);
+gap:16px
+}
+
+.card{
+background:#fffaf6e8;
+border:1px solid var(--line);
+box-shadow:var(--shadow);
+border-radius:var(--r);
+padding:20px
+}
+
+.s3{grid-column:span 3}
+.s4{grid-column:span 4}
+.s5{grid-column:span 5}
+.s6{grid-column:span 6}
+.s7{grid-column:span 7}
+.s8{grid-column:span 8}
+.s12{grid-column:span 12}
+
+.kpi{
+display:flex;
+justify-content:space-between;
+align-items:center
+}
+
+.num{
+font-size:30px;
+font-weight:850;
+color:var(--wine)
+}
+
+.ico{
+width:44px;
+height:44px;
+border-radius:15px;
+background:#f0ded5;
+display:grid;
+place-items:center
+}
+
+.label{
+font-size:10px;
+text-transform:uppercase;
+letter-spacing:.12em;
+color:var(--muted)
+}
+
+.between{
+display:flex;
+justify-content:space-between;
+gap:10px;
+align-items:center
+}
+
+.pill{
+font-size:11px;
+background:#f1e1d8;
+padding:6px 9px;
+border-radius:99px;
+color:var(--wine)
+}
+
+.board{
+display:flex;
+align-items:center;
+gap:12px;
+padding:12px 0;
+border-bottom:1px solid var(--line)
+}
+
+.board:last-child{border:0}
+
+.pts{
+margin-left:auto;
+color:var(--wine);
+font-weight:800
+}
+
+.rank{
+width:24px;
+text-align:center
+}
+
+.bar{
+height:8px;
+background:#eaded7;
+border-radius:99px;
+overflow:hidden
+}
+
+.bar b{
+display:block;
+height:100%;
+background:var(--wine);
+border-radius:99px
+}
+
+.page{display:none}
+.page.active{display:block}
+
+.activity{
+display:flex;
+gap:12px;
+padding:12px 0;
+border-bottom:1px solid var(--line)
+}
+
+.small{
+font-size:11px;
+color:var(--muted)
+}
+
+table{
+width:100%;
+border-collapse:collapse
+}
+
+th,td{
+text-align:left;
+padding:12px;
+border-bottom:1px solid var(--line);
+font-size:13px
+}
+
+th{
+font-size:10px;
+color:var(--muted);
+text-transform:uppercase
+}
+
+.form{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:11px
+}
+
+.timer{
+text-align:center;
+font-size:68px;
+font-weight:850;
+color:var(--wine);
+margin:10px
+}
+
+.timerBtns{
+display:flex;
+justify-content:center;
+gap:8px
+}
+
+.presets{
+display:flex;
+gap:7px;
+justify-content:center;
+margin-top:10px
+}
+
+.presets button{
+background:#f0dfd6;
+color:var(--wine);
+border-radius:11px;
+padding:8px 11px
+}
+
+.badges{
+display:flex;
+flex-wrap:wrap;
+gap:9px
+}
+
+.badge{
+padding:9px 11px;
+background:#f0dfd6;
+border-radius:13px;
+font-size:12px
+}
+
+.toast{
+position:fixed;
+right:20px;
+bottom:20px;
+background:#522d34;
+color:white;
+padding:13px 16px;
+border-radius:14px;
+display:none;
+z-index:20
+}
+
+.modal{
+position:fixed;
+inset:0;
+background:#38232288;
+display:none;
+place-items:center;
+padding:20px;
+z-index:10
+}
+
+.modal.open{display:grid}
+
+.modalbox{
+background:var(--surface);
+padding:23px;
+border-radius:24px;
+max-width:520px;
+width:100%
+}
+
+.code-display{
+margin:18px 0;
+padding:18px;
+background:#f0dfd6;
+border:1px dashed #c49b8d;
+border-radius:18px;
+text-align:center
+}
+
+.code-display .code{
+font-size:28px;
+font-weight:900;
+letter-spacing:.12em;
+color:var(--wine);
+margin:8px 0
+}
+
+.callbox{
+aspect-ratio:16/9;
+border-radius:18px;
+background:#e9dbd3;
+display:grid;
+place-items:center;
+text-align:center;
+padding:25px
+}
+
+@media(max-width:1000px){
+.app{grid-template-columns:1fr}
+aside{
+height:auto;
+position:relative
+}
+.nav{
+display:flex;
+overflow:auto
+}
+.nav button{
+min-width:max-content
+}
+.side-user{display:none}
+.s3,.s4,.s5,.s6,.s7,.s8{
+grid-column:span 12
+}
+}
+
+@media(max-width:600px){
+main{padding:16px}
+.top{flex-direction:column}
+.form{grid-template-columns:1fr}
+.timer{font-size:50px}
+}
 </style>
 </head>
+
 <body>
+
 <div id="authScreen" class="center">
- <div class="auth">
-  <div class="logo">Study Rats ♡</div><div class="sub">estude. compita. evolua. juntas.</div>
-  <div class="tabs"><button id="loginTab" class="active" onclick="setAuthMode('login')">Entrar</button><button id="signupTab" onclick="setAuthMode('signup')">Criar conta</button></div>
-  <div id="authName" class="field hidden"><label>Seu nome<input id="nameInput" placeholder="Emanuele"></label></div>
-  <div class="field"><label>E-mail<input id="emailInput" type="email" placeholder="voce@email.com"></label></div>
-  <div class="field"><label>Senha<input id="passwordInput" type="password" placeholder="••••••••"></label></div>
-  <button class="btn primary" style="width:100%;margin-top:8px" onclick="submitAuth()" id="authBtn">Entrar ♡</button>
-  <p class="small" id="authMsg"></p>
- </div>
+<div class="auth">
+
+<div class="logo">Study Rats ♡</div>
+<div class="sub">estude. compita. evolua. juntas.</div>
+
+<div class="tabs">
+<button id="loginTab" class="active" onclick="setAuthMode('login')">Entrar</button>
+<button id="signupTab" onclick="setAuthMode('signup')">Criar conta</button>
 </div>
 
+<div id="authName" class="field hidden">
+<label>
+Seu nome
+<input id="nameInput" placeholder="Emanuele">
+</label>
+</div>
+
+<div class="field">
+<label>
+E-mail
+<input id="emailInput" type="email" placeholder="voce@email.com">
+</label>
+</div>
+
+<div class="field">
+<label>
+Senha
+<input id="passwordInput" type="password" placeholder="••••••••">
+</label>
+</div>
+
+<button
+class="btn primary"
+style="width:100%;margin-top:8px"
+onclick="submitAuth()"
+id="authBtn">
+Entrar ♡
+</button>
+
+<p class="small" id="authMsg"></p>
+
+</div>
+</div>
+
+
 <div id="appScreen" class="app hidden">
-<aside><div class="brand">Study Rats ♡</div><div class="tag">seu cantinho de estudos</div><div style="margin:0 8px 16px"><div class="tag" style="margin:0 0 6px">grupo atual · troque quando quiser</div><select id="groupPicker" onchange="switchGroup(this.value)" style="background:#ffffff12;color:#fff;border-color:#ffffff33;margin:0"><option value="">Sem grupo</option></select></div><div class="nav">
-<button class="active" data-page="home">🏠 Visão geral</button><button data-page="ranking">🏆 Rankings</button><button data-page="pomodoro">🍅 Pomodoro</button><button data-page="register">✍️ Registrar</button><button data-page="challenges">🎯 Desafios</button><button data-page="calendar">🗓️ Calendário</button><button data-page="room">📹 Study room</button><button data-page="settings">⚙️ Configurações</button></div>
-<div class="side-user"><div class="between"><span id="sideName">...</span><button class="btn ghost" style="color:#fff;border-color:#ffffff33;padding:6px 8px" onclick="logout()">sair</button></div><div class="small" style="color:#eadbd4;margin-top:6px" id="groupSide">Sem grupo</div></div></aside>
+
+<aside>
+
+<div class="brand">Study Rats ♡</div>
+
+<div class="tag">seu cantinho de estudos</div>
+
+<div style="margin:0 8px 16px">
+
+<div class="tag" style="margin:0 0 6px">
+grupo atual · troque quando quiser
+</div>
+
+<select
+id="groupPicker"
+onchange="switchGroup(this.value)"
+style="background:#ffffff12;color:#fff;border-color:#ffffff33;margin:0">
+
+<option value="">Sem grupo</option>
+
+</select>
+
+</div>
+
+<div class="nav">
+
+<button class="active" data-page="home">🏠 Visão geral</button>
+<button data-page="ranking">🏆 Rankings</button>
+<button data-page="pomodoro">🍅 Pomodoro</button>
+<button data-page="register">✍️ Registrar</button>
+<button data-page="challenges">🎯 Desafios</button>
+<button data-page="calendar">🗓️ Calendário</button>
+<button data-page="room">📹 Study room</button>
+<button data-page="settings">⚙️ Configurações</button>
+
+</div>
+
+<div class="side-user">
+
+<div class="between">
+
+<span id="sideName">...</span>
+
+<button
+class="btn ghost"
+style="color:#fff;border-color:#ffffff33;padding:6px 8px"
+onclick="logout()">
+sair
+</button>
+
+</div>
+
+<div
+class="small"
+style="color:#eadbd4;margin-top:6px"
+id="groupSide">
+Sem grupo
+</div>
+
+</div>
+
+</aside>
+
+
 <main>
-<div class="top"><div><div class="eyebrow">study rats · temporada atual</div><h1 id="hello">Oi ♡</h1><div class="muted" id="todayText"></div></div><div class="actions"><button class="btn soft" onclick="showPage('register')">＋ Registrar</button><button class="btn primary" onclick="showPage('pomodoro')">🍅 Começar foco</button></div></div>
 
-<section id="home" class="page active"><div id="noGroup" class="card hidden"><h2>👯 Entre no seu primeiro grupo</h2><p class="muted">Crie o grupo das meninas ou use um código de convite que alguém te mandou.</p><div class="actions"><button class="btn primary" onclick="openGroup('create')">criar grupo</button><button class="btn soft" onclick="openGroup('join')">entrar com código</button></div></div>
-<div id="homeContent"><div class="grid">
-<div class="card s3"><div class="label">seus pontos hoje</div><div class="kpi"><div><div class="num" id="myPts">0</div><div class="muted">pontos</div></div><div class="ico">✨</div></div></div>
-<div class="card s3"><div class="label">tempo hoje</div><div class="kpi"><div><div class="num" id="myMin">0m</div><div class="muted">estudado</div></div><div class="ico">☕</div></div></div>
-<div class="card s3"><div class="label">questões</div><div class="kpi"><div><div class="num" id="myQ">0</div><div class="muted">resolvidas</div></div><div class="ico">✓</div></div></div>
-<div class="card s3"><div class="label">streak</div><div class="kpi"><div><div class="num" id="myStreak">0</div><div class="muted">dias seguidos 🔥</div></div><div class="ico">🔥</div></div></div>
-<div class="card s7"><div class="between"><h2>Quem está dominando hoje?</h2><span class="pill">ao vivo</span></div><div id="todayBoard"></div></div>
-<div class="card s5"><h2>Meta da semana</h2><div class="between"><b id="weekMin">0 min</b><span class="small">300 min</span></div><div class="bar" style="margin:8px 0 17px"><b id="weekBar" style="width:0%"></b></div><div class="between"><b id="weekQ">0 questões</b><span class="small">150</span></div><div class="bar" style="margin-top:8px"><b id="qBar" style="width:0%"></b></div></div>
-<div class="card s8"><div class="between"><h2>Atividade do grupo</h2><span class="pill">ao vivo</span></div><div id="feed"></div></div>
-<div class="card s4"><h2>Conquistas</h2><div class="badges" id="badges"></div></div>
-</div></div></section>
+<div class="top">
 
-<section id="ranking" class="page"><div class="card"><div class="between"><h2>🏆 Ranking da temporada</h2><select id="rankPeriod" onchange="renderRanking()" style="width:170px"><option value="day">Hoje</option><option value="week">Semana</option><option value="month">Mês</option><option value="semester">Semestre</option><option value="year">Ano</option></select></div><div id="rankingTable"></div></div></section>
-<section id="pomodoro" class="page"><div class="grid"><div class="card s5"><div class="label" style="text-align:center">foco</div><div class="muted" style="text-align:center" id="timerMode">25 min · foco</div><div class="timer" id="clock">25:00</div><div class="timerBtns"><button class="btn primary" id="timerButton" onclick="toggleTimer()">começar</button><button class="btn soft" onclick="resetTimer()">resetar</button></div><div class="presets"><button onclick="setTimer(25)">25</button><button onclick="setTimer(50)">50</button><button onclick="setTimer(90)">90</button></div></div><div class="card s7"><h2>🍅 Seu Pomodoro</h2><p class="muted">Ao terminar, a sessão pode ser registrada automaticamente como estudo.</p><div class="board"><span>Hoje</span><b id="pomToday" class="pts">0 sessões</b></div><div class="board"><span>Esta semana</span><b id="pomWeek" class="pts">0 sessões</b></div></div></div></section>
-<section id="register" class="page"><div class="card"><h2>✍️ Registrar estudo</h2><div class="form">
-<label>Data<input type="date" id="fDate"></label><label>Matéria<input id="fSubject" placeholder="Patologia"></label><label>Tempo em minutos<input id="fMinutes" type="number" min="0" value="50"></label><label>Questões<input id="fQuestions" type="number" min="0" value="0"></label><label>Acertos<input id="fCorrect" type="number" min="0" value="0"></label><label>Aulas assistidas<input id="fLessons" type="number" min="0" value="0"></label><label>Pomodoros<input id="fPom" type="number" min="0" value="1"></label><label>Tipo<select id="fType"><option>Estudo</option><option>Revisão</option><option>Simulado</option><option>Lista de questões</option></select></label><label style="grid-column:1/-1">Observação<input id="fNote" placeholder="Ex.: revisão de necrose"></label>
-</div><div style="margin-top:14px"><button class="btn primary" onclick="saveStudy()">salvar e pontuar ♡</button></div></div><div class="card" style="margin-top:16px"><h2>Histórico do grupo</h2><div id="history"></div></div></section>
-<section id="challenges" class="page"><div class="grid"><div class="card s6"><h2>🎯 Desafios</h2><div id="challengeList"></div></div><div class="card s6"><h2>🍂 Temporada</h2><p class="muted">A pontuação do grupo pode ser usada para temporadas e desafios personalizados.</p><div class="pill">Study Rats · 2026</div></div></div></section>
-<section id="calendar" class="page"><div class="card"><div class="between"><h2>🗓️ Calendário</h2><span class="pill" id="calTitle"></span></div><div id="calendarGrid" style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-top:14px"></div></div></section>
-<section id="room" class="page"><div class="card"><div class="between"><h2>📹 Study room</h2><span class="pill">Jitsi</span></div><p class="muted">Crie uma sala e compartilhe o nome com as meninas.</p><div class="actions"><input id="roomName" placeholder="study-rats-patologia" style="max-width:400px"><button class="btn primary" onclick="openRoom()">abrir sala</button></div><div class="callbox" style="margin-top:16px"><div><div style="font-size:55px">📹</div><h3>Study with me ♡</h3><p class="muted">A videochamada abre em uma nova aba.</p></div></div></div></section>
-<section id="settings" class="page"><div class="grid"><div class="card s6"><h2>👯 Seu grupo</h2><div id="groupInfo"></div><div class="small" style="margin-top:6px">Você pode participar de vários grupos ao mesmo tempo. O ranking e os estudos mudam conforme o grupo selecionado.</div><div id="allGroups" style="margin-top:14px"></div><div class="actions" style="margin-top:12px"><button class="btn primary" onclick="openGroup('create')">criar outro</button><button class="btn soft" onclick="openGroup('join')">entrar em outro</button></div></div><div class="card s6"><h2>👤 Seu perfil</h2><div class="field"><label>Nome<input id="profileName"></label></div><button class="btn primary" onclick="saveProfile()">salvar nome</button></div><div class="card s12"><h2>🔄 Sincronização</h2><p class="muted">Conectado ao banco online. Alterações em <b>study_logs</b> são recebidas em tempo real enquanto você estiver com o site aberto.</p></div></div></section>
-</main></div>
+<div>
 
-<div class="modal" id="groupModal"><div class="modalbox"><div class="between"><h2 id="groupTitle">Grupo</h2><button class="btn soft" onclick="closeGroup()">×</button></div><div id="groupCreate"><div class="field"><label>Nome do grupo<input id="groupName" placeholder="Study Rats — Medicina"></label></div><button class="btn primary" onclick="createGroup()">criar grupo ♡</button></div><div id="groupJoin" class="hidden"><div class="field"><label>Código de convite<input id="inviteCode" placeholder="RATS-7K4P" style="text-transform:uppercase"></label></div><button class="btn primary" onclick="joinGroup()">entrar ♡</button></div><p class="small" id="groupMsg"></p></div></div>
+<div class="eyebrow">
+study rats · temporada atual
+</div>
+
+<h1 id="hello">Oi ♡</h1>
+
+<div class="muted" id="todayText"></div>
+
+</div>
+
+<div class="actions">
+
+<button
+class="btn soft"
+onclick="showPage('register')">
+＋ Registrar
+</button>
+
+<button
+class="btn primary"
+onclick="showPage('pomodoro')">
+🍅 Começar foco
+</button>
+
+</div>
+
+</div>
+
+
+<section id="home" class="page active">
+
+<div id="noGroup" class="card hidden">
+
+<h2>👯 Entre no seu primeiro grupo</h2>
+
+<p class="muted">
+Crie o grupo das meninas ou use um código de convite que alguém te mandou.
+</p>
+
+<div class="actions">
+
+<button
+class="btn primary"
+onclick="openGroup('create')">
+criar grupo
+</button>
+
+<button
+class="btn soft"
+onclick="openGroup('join')">
+entrar com código
+</button>
+
+</div>
+
+</div>
+
+
+<div id="homeContent">
+
+<div class="grid">
+
+<div class="card s3">
+<div class="label">seus pontos hoje</div>
+
+<div class="kpi">
+
+<div>
+<div class="num" id="myPts">0</div>
+<div class="muted">pontos</div>
+</div>
+
+<div class="ico">✨</div>
+
+</div>
+</div>
+
+
+<div class="card s3">
+<div class="label">tempo hoje</div>
+
+<div class="kpi">
+
+<div>
+<div class="num" id="myMin">0m</div>
+<div class="muted">estudado</div>
+</div>
+
+<div class="ico">☕</div>
+
+</div>
+</div>
+
+
+<div class="card s3">
+<div class="label">questões</div>
+
+<div class="kpi">
+
+<div>
+<div class="num" id="myQ">0</div>
+<div class="muted">resolvidas</div>
+</div>
+
+<div class="ico">✓</div>
+
+</div>
+</div>
+
+
+<div class="card s3">
+<div class="label">streak</div>
+
+<div class="kpi">
+
+<div>
+<div class="num" id="myStreak">0</div>
+<div class="muted">dias seguidos 🔥</div>
+</div>
+
+<div class="ico">🔥</div>
+
+</div>
+</div>
+
+
+<div class="card s7">
+
+<div class="between">
+
+<h2>Quem está dominando hoje?</h2>
+
+<span class="pill">ao vivo</span>
+
+</div>
+
+<div id="todayBoard"></div>
+
+</div>
+
+
+<div class="card s5">
+
+<h2>Meta da semana</h2>
+
+<div class="between">
+<b id="weekMin">0 min</b>
+<span class="small">300 min</span>
+</div>
+
+<div class="bar" style="margin:8px 0 17px">
+<b id="weekBar" style="width:0%"></b>
+</div>
+
+<div class="between">
+<b id="weekQ">0 questões</b>
+<span class="small">150</span>
+</div>
+
+<div class="bar" style="margin-top:8px">
+<b id="qBar" style="width:0%"></b>
+</div>
+
+</div>
+
+
+<div class="card s8">
+
+<div class="between">
+
+<h2>Atividade do grupo</h2>
+
+<span class="pill">ao vivo</span>
+
+</div>
+
+<div id="feed"></div>
+
+</div>
+
+
+<div class="card s4">
+
+<h2>Conquistas</h2>
+
+<div class="badges" id="badges"></div>
+
+</div>
+
+</div>
+</div>
+
+</section>
+
+
+<section id="ranking" class="page">
+
+<div class="card">
+
+<div class="between">
+
+<h2>🏆 Ranking da temporada</h2>
+
+<select
+id="rankPeriod"
+onchange="renderRanking()"
+style="width:170px">
+
+<option value="day">Hoje</option>
+<option value="week">Semana</option>
+<option value="month">Mês</option>
+<option value="semester">Semestre</option>
+<option value="year">Ano</option>
+
+</select>
+
+</div>
+
+<div id="rankingTable"></div>
+
+</div>
+
+</section>
+
+
+<section id="pomodoro" class="page">
+
+<div class="grid">
+
+<div class="card s5">
+
+<div class="label" style="text-align:center">
+foco
+</div>
+
+<div
+class="muted"
+style="text-align:center"
+id="timerMode">
+25 min · foco
+</div>
+
+<div class="timer" id="clock">
+25:00
+</div>
+
+<div class="timerBtns">
+
+<button
+class="btn primary"
+id="timerButton"
+onclick="toggleTimer()">
+começar
+</button>
+
+<button
+class="btn soft"
+onclick="resetTimer()">
+resetar
+</button>
+
+</div>
+
+<div class="presets">
+
+<button onclick="setTimer(25)">25</button>
+<button onclick="setTimer(50)">50</button>
+<button onclick="setTimer(90)">90</button>
+
+</div>
+
+</div>
+
+
+<div class="card s7">
+
+<h2>🍅 Seu Pomodoro</h2>
+
+<p class="muted">
+Ao terminar, a sessão pode ser registrada automaticamente como estudo.
+</p>
+
+<div class="board">
+<span>Hoje</span>
+<b id="pomToday" class="pts">0 sessões</b>
+</div>
+
+<div class="board">
+<span>Esta semana</span>
+<b id="pomWeek" class="pts">0 sessões</b>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<section id="register" class="page">
+
+<div class="card">
+
+<h2>✍️ Registrar estudo</h2>
+
+<div class="form">
+
+<label>
+Data
+<input type="date" id="fDate">
+</label>
+
+<label>
+Matéria
+<input id="fSubject" placeholder="Patologia">
+</label>
+
+<label>
+Tempo em minutos
+<input id="fMinutes" type="number" min="0" value="50">
+</label>
+
+<label>
+Questões
+<input id="fQuestions" type="number" min="0" value="0">
+</label>
+
+<label>
+Acertos
+<input id="fCorrect" type="number" min="0" value="0">
+</label>
+
+<label>
+Aulas assistidas
+<input id="fLessons" type="number" min="0" value="0">
+</label>
+
+<label>
+Pomodoros
+<input id="fPom" type="number" min="0" value="1">
+</label>
+
+<label>
+Tipo
+<select id="fType">
+<option>Estudo</option>
+<option>Revisão</option>
+<option>Simulado</option>
+<option>Lista de questões</option>
+</select>
+</label>
+
+<label style="grid-column:1/-1">
+Observação
+<input id="fNote" placeholder="Ex.: revisão de necrose">
+</label>
+
+</div>
+
+<div style="margin-top:14px">
+
+<button
+class="btn primary"
+onclick="saveStudy()">
+salvar e pontuar ♡
+</button>
+
+</div>
+
+</div>
+
+
+<div class="card" style="margin-top:16px">
+
+<h2>Histórico do grupo</h2>
+
+<div id="history"></div>
+
+</div>
+
+</section>
+
+
+<section id="challenges" class="page">
+
+<div class="grid">
+
+<div class="card s6">
+
+<h2>🎯 Desafios</h2>
+
+<div id="challengeList"></div>
+
+</div>
+
+<div class="card s6">
+
+<h2>🍂 Temporada</h2>
+
+<p class="muted">
+A pontuação do grupo pode ser usada para temporadas e desafios personalizados.
+</p>
+
+<div class="pill">
+Study Rats · 2026
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<section id="calendar" class="page">
+
+<div class="card">
+
+<div class="between">
+
+<h2>🗓️ Calendário</h2>
+
+<span class="pill" id="calTitle"></span>
+
+</div>
+
+<div
+id="calendarGrid"
+style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-top:14px">
+</div>
+
+</div>
+
+</section>
+
+
+<section id="room" class="page">
+
+<div class="card">
+
+<div class="between">
+
+<h2>📹 Study room</h2>
+
+<span class="pill">Jitsi</span>
+
+</div>
+
+<p class="muted">
+Crie uma sala e compartilhe o nome com as meninas.
+</p>
+
+<div class="actions">
+
+<input
+id="roomName"
+placeholder="study-rats-patologia"
+style="max-width:400px">
+
+<button
+class="btn primary"
+onclick="openRoom()">
+abrir sala
+</button>
+
+</div>
+
+<div
+class="callbox"
+style="margin-top:16px">
+
+<div>
+
+<div style="font-size:55px">📹</div>
+
+<h3>Study with me ♡</h3>
+
+<p class="muted">
+A videochamada abre em uma nova aba.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<section id="settings" class="page">
+
+<div class="grid">
+
+
+<div class="card s6">
+
+<h2>👯 Seu grupo</h2>
+
+<div id="groupInfo"></div>
+
+<div
+class="small"
+style="margin-top:6px">
+
+Você pode participar de vários grupos ao mesmo tempo.
+O ranking e os estudos mudam conforme o grupo selecionado.
+
+</div>
+
+<div
+id="allGroups"
+style="margin-top:14px">
+</div>
+
+
+<div
+class="actions"
+style="margin-top:12px">
+
+<button
+class="btn primary"
+onclick="openGroup('create')">
+criar outro
+</button>
+
+<button
+class="btn soft"
+onclick="openGroup('join')">
+entrar em outro
+</button>
+
+<button
+class="btn danger"
+onclick="deleteGroup()">
+🗑️ Excluir grupo
+</button>
+
+</div>
+
+</div>
+
+
+<div class="card s6">
+
+<h2>👤 Seu perfil</h2>
+
+<div class="field">
+
+<label>
+Nome
+<input id="profileName">
+</label>
+
+</div>
+
+<button
+class="btn primary"
+onclick="saveProfile()">
+salvar nome
+</button>
+
+</div>
+
+
+<div class="card s12">
+
+<h2>🔄 Sincronização</h2>
+
+<p class="muted">
+Conectado ao banco online. Alterações em
+<b>study_logs</b>
+são recebidas em tempo real enquanto você estiver com o site aberto.
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+</main>
+
+</div>
+
+
+<!-- MODAL DE GRUPO -->
+
+<div class="modal" id="groupModal">
+
+<div class="modalbox">
+
+<div class="between">
+
+<h2 id="groupTitle">Grupo</h2>
+
+<button
+class="btn soft"
+onclick="closeGroup()">
+×
+</button>
+
+</div>
+
+
+<div id="groupCreate">
+
+<div class="field">
+
+<label>
+Nome do grupo
+
+<input
+id="groupName"
+placeholder="Study Rats — Medicina">
+
+</label>
+
+</div>
+
+<button
+class="btn primary"
+onclick="createGroup()">
+criar grupo ♡
+</button>
+
+</div>
+
+
+<div id="groupJoin" class="hidden">
+
+<div class="field">
+
+<label>
+Código de convite
+
+<input
+id="inviteCode"
+placeholder="RATS-7K4P"
+style="text-transform:uppercase">
+
+</label>
+
+</div>
+
+<button
+class="btn primary"
+onclick="joinGroup()">
+entrar ♡
+</button>
+
+</div>
+
+
+<p class="small" id="groupMsg"></p>
+
+</div>
+
+</div>
+
+
+<!-- MODAL DO CÓDIGO -->
+
+<div class="modal" id="codeModal">
+
+<div class="modalbox" style="text-align:center">
+
+<div style="font-size:48px">
+🎉
+</div>
+
+<h2>Grupo criado!</h2>
+
+<p class="muted">
+Seu grupo foi criado com sucesso.
+Agora compartilhe o código com suas amigas:
+</p>
+
+<div class="code-display">
+
+<div class="small">
+CÓDIGO DE CONVITE
+</div>
+
+<div
+class="code"
+id="createdCode">
+RATS-XXXX
+</div>
+
+</div>
+
+<div class="actions" style="justify-content:center">
+
+<button
+class="btn primary"
+onclick="copyCreatedCode()">
+📋 Copiar código
+</button>
+
+<button
+class="btn soft"
+onclick="shareCreatedGroup()">
+💌 Compartilhar
+</button>
+
+</div>
+
+<button
+class="btn ghost"
+style="margin-top:10px;width:100%"
+onclick="closeCodeModal()">
+continuar
+</button>
+
+</div>
+
+</div>
+
+
 <div class="toast" id="toast"></div>
 
+
 <script>
-const SUPABASE_URL="https://reobozxxobmphssgvvkz.supabase.co"; 
+
+const SUPABASE_URL="https://reobozxxobmphssgvvkz.supabase.co";
+
 const SUPABASE_KEY="sb_publishable_7yRXWSBmqZpOqUt7YTFMlA_g-q8Smvd";
-const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
-let user=null,group=null,members=[],logs=[],rules={minute:1,question:2,lesson:30,pomodoro:10,perfect:25,review:20,simulado:50}, realtime=null;
-const $=id=>document.getElementById(id); const today=()=>new Date().toISOString().slice(0,10);
-function fmt(m){m=+m||0;return m>=60?Math.floor(m/60)+"h "+m%60+"m":m+"m"}
-function periodStart(p){let d=new Date();d.setHours(0,0,0,0);if(p=="week"){let x=d.getDay()||7;d.setDate(d.getDate()-x+1)}if(p=="month")d.setDate(1);if(p=="semester")d.setMonth(d.getMonth()<6?0:6,1);if(p=="year")d.setMonth(0,1);return d}
-function pts(s){let p=rules,x=s.minutes*p.minute+s.questions*p.question+s.lessons*p.lesson+s.pomodoros*p.pomodoro;if(s.questions>0&&s.correct==s.questions)x+=p.perfect;if(s.activity_type=="Revisão")x+=p.review;if(s.activity_type=="Simulado")x+=p.simulado;return Math.round(x)}
-function setAuthMode(mode){$("loginTab").classList.toggle("active",mode=="login");$("signupTab").classList.toggle("active",mode=="signup");$("authName").classList.toggle("hidden",mode!="signup");$("authBtn").textContent=mode=="signup"?"Criar conta ♡":"Entrar ♡";$("authBtn").dataset.mode=mode;$("authMsg").textContent=""}
-async function submitAuth(){let mode=$("authBtn").dataset.mode||"login",email=$("emailInput").value.trim(),password=$("passwordInput").value,name=$("nameInput").value.trim();if(!email||!password)return msg("authMsg","Preencha e-mail e senha.");$("authBtn").disabled=true;let r=mode=="signup"?await sb.auth.signUp({email,password,options:{data:{display_name:name||email.split("@")[0]}}}):await sb.auth.signInWithPassword({email,password});$("authBtn").disabled=false;if(r.error)return msg("authMsg",r.error.message);if(mode=="signup"&&!r.data.session){msg("authMsg","Conta criada! Verifique seu e-mail e depois entre.");return}await boot(r.data.session)}
-function msg(id,t){$(id).textContent=t}
-async function boot(session){if(!session)return;user=session.user;$("authScreen").classList.add("hidden");$("appScreen").classList.remove("hidden");await loadProfile();await loadGroup();fDate.value=today();setupRealtime()}
-async function loadProfile(){let {data}=await sb.from("profiles").select("*").eq("id",user.id).maybeSingle();if(data){$("sideName").textContent=data.display_name;$("hello").textContent=`Oi, ${data.display_name} ♡`;$("profileName").value=data.display_name}else{let n=user.user_metadata?.display_name||user.email.split("@")[0];await sb.from("profiles").insert({id:user.id,display_name:n});$("sideName").textContent=n;$("hello").textContent=`Oi, ${n} ♡`;$("profileName").value=n}}
+
+const sb=supabase.createClient(
+SUPABASE_URL,
+SUPABASE_KEY
+);
+
+
+let user=null;
+let group=null;
+let members=[];
+let logs=[];
+
+let rules={
+minute:1,
+question:2,
+lesson:30,
+pomodoro:10,
+perfect:25,
+review:20,
+simulado:50
+};
+
+let realtime=null;
+
+let createdGroupForShare=null;
+
+
+const $=id=>document.getElementById(id);
+
+const today=()=>new Date().toISOString().slice(0,10);
+
+
+function fmt(m){
+
+m=+m||0;
+
+return m>=60
+?Math.floor(m/60)+"h "+m%60+"m"
+:m+"m";
+
+}
+
+
+function periodStart(p){
+
+let d=new Date();
+
+d.setHours(0,0,0,0);
+
+if(p=="week"){
+
+let x=d.getDay()||7;
+
+d.setDate(d.getDate()-x+1);
+
+}
+
+if(p=="month")
+d.setDate(1);
+
+if(p=="semester")
+d.setMonth(d.getMonth()<6?0:6,1);
+
+if(p=="year")
+d.setMonth(0,1);
+
+return d;
+
+}
+
+
+function pts(s){
+
+let p=rules;
+
+let x=
+s.minutes*p.minute+
+s.questions*p.question+
+s.lessons*p.lesson+
+s.pomodoros*p.pomodoro;
+
+if(
+s.questions>0 &&
+s.correct==s.questions
+)
+x+=p.perfect;
+
+if(s.activity_type=="Revisão")
+x+=p.review;
+
+if(s.activity_type=="Simulado")
+x+=p.simulado;
+
+return Math.round(x);
+
+}
+
+
+function setAuthMode(mode){
+
+$("loginTab").classList.toggle(
+"active",
+mode=="login"
+);
+
+$("signupTab").classList.toggle(
+"active",
+mode=="signup"
+);
+
+$("authName").classList.toggle(
+"hidden",
+mode!="signup"
+);
+
+$("authBtn").textContent=
+mode=="signup"
+?"Criar conta ♡"
+:"Entrar ♡";
+
+$("authBtn").dataset.mode=mode;
+
+$("authMsg").textContent="";
+
+}
+
+
+async function submitAuth(){
+
+let mode=$("authBtn").dataset.mode||"login";
+
+let email=$("emailInput").value.trim();
+
+let password=$("passwordInput").value;
+
+let name=$("nameInput").value.trim();
+
+if(!email||!password)
+return msg(
+"authMsg",
+"Preencha e-mail e senha."
+);
+
+$("authBtn").disabled=true;
+
+
+let r=mode=="signup"
+
+?await sb.auth.signUp({
+email,
+password,
+options:{
+data:{
+display_name:name||email.split("@")[0]
+}
+}
+})
+
+:await sb.auth.signInWithPassword({
+email,
+password
+});
+
+
+$("authBtn").disabled=false;
+
+
+if(r.error)
+return msg(
+"authMsg",
+r.error.message
+);
+
+
+if(
+mode=="signup" &&
+!r.data.session
+){
+
+msg(
+"authMsg",
+"Conta criada! Verifique seu e-mail e depois entre."
+);
+
+return;
+
+}
+
+
+await boot(r.data.session);
+
+}
+
+
+function msg(id,t){
+
+$(id).textContent=t;
+
+}
+
+
+async function boot(session){
+
+if(!session)return;
+
+user=session.user;
+
+$("authScreen").classList.add("hidden");
+
+$("appScreen").classList.remove("hidden");
+
+await loadProfile();
+
+await loadGroup();
+
+$("fDate").value=today();
+
+setupRealtime();
+
+}
+
+
+async function loadProfile(){
+
+let {data}=await sb
+.from("profiles")
+.select("*")
+.eq("id",user.id)
+.maybeSingle();
+
+
+if(data){
+
+$("sideName").textContent=data.display_name;
+
+$("hello").textContent=
+`Oi, ${data.display_name} ♡`;
+
+$("profileName").value=data.display_name;
+
+}else{
+
+let n=
+user.user_metadata?.display_name||
+user.email.split("@")[0];
+
+await sb
+.from("profiles")
+.insert({
+id:user.id,
+display_name:n
+});
+
+$("sideName").textContent=n;
+
+$("hello").textContent=
+`Oi, ${n} ♡`;
+
+$("profileName").value=n;
+
+}
+
+}
+
+
 async function loadGroup(){
-  let {data,error}=await sb.from("group_members").select("group_id,groups(id,name,invite_code)").eq("user_id",user.id);
-  if(error){console.error(error);group=null;showNoGroup();return}
-  const groups=(data||[]).map(x=>x.groups).filter(Boolean);
-  renderGroupPicker(groups);
-  if(!groups.length){group=null;showNoGroup();return}
-  const saved=localStorage.getItem("study_rats_group");
-  const chosen=groups.find(g=>g.id===saved)||groups[0];
-  await selectGroup(chosen.id, groups);
+
+let {
+data,
+error
+}=await sb
+.from("group_members")
+.select("group_id,groups(id,name,invite_code,created_by)")
+.eq("user_id",user.id);
+
+
+if(error){
+
+console.error(error);
+
+group=null;
+
+showNoGroup();
+
+return;
+
 }
+
+
+const groups=(data||[])
+.map(x=>x.groups)
+.filter(Boolean);
+
+
+renderGroupPicker(groups);
+
+
+if(!groups.length){
+
+group=null;
+
+showNoGroup();
+
+return;
+
+}
+
+
+const saved=
+localStorage.getItem("study_rats_group");
+
+const chosen=
+groups.find(g=>g.id===saved)||
+groups[0];
+
+
+await selectGroup(
+chosen.id,
+groups
+);
+
+}
+
+
 function renderGroupPicker(groups){
-  const picker=$("groupPicker");
-  if(picker) picker.innerHTML=groups.map(g=>`<option value="${g.id}">${escapeHtml(g.name)}</option>`).join("")||'<option value="">Sem grupo</option>';
-  const current=group?.id; if(picker&&current) picker.value=current;
-  $("allGroups").innerHTML=groups.length?groups.map(g=>`<div class="between" style="padding:10px 0;border-bottom:1px solid var(--line)"><div><b>${escapeHtml(g.name)}</b><div class="small">${escapeHtml(g.invite_code)}</div></div><div class="actions"><button class="btn soft" onclick='switchGroup(${JSON.stringify(g.id)})'>abrir</button><button class="btn ghost" onclick='copyCode(${JSON.stringify(g.invite_code)})'>copiar código</button></div></div>`).join(""): '<div class="muted">Você ainda não participa de nenhum grupo.</div>';
+
+const picker=$("groupPicker");
+
+if(picker){
+
+picker.innerHTML=
+groups.map(g=>
+`<option value="${g.id}">
+${escapeHtml(g.name)}
+</option>`
+).join("")
+||
+'<option value="">Sem grupo</option>';
+
 }
-async function selectGroup(id, groups){
-  const list=groups||await getMyGroups(); const g=list.find(x=>x.id===id); if(!g)return;
-  group=g; localStorage.setItem("study_rats_group",g.id);
-  $("groupPicker").value=g.id; $("groupSide").textContent=g.name+" · "+g.invite_code;
-  $("groupInfo").innerHTML=`<div class="between"><div><b style="font-size:18px">${escapeHtml(g.name)}</b><div class="small">Código de convite</div></div><span class="pill">${escapeHtml(g.invite_code)}</span></div><div class="actions" style="margin-top:12px"><button class="btn soft" onclick='copyCode(${JSON.stringify(g.invite_code)})'>📋 Copiar código</button><button class="btn ghost" onclick='shareGroup(${JSON.stringify(g.name)}, ${JSON.stringify(g.invite_code)})'>compartilhar</button></div>`;
-  $("noGroup").classList.add("hidden"); $("homeContent").classList.remove("hidden"); await loadData();
+
+
+const current=group?.id;
+
+if(picker&&current)
+picker.value=current;
+
+
+$("allGroups").innerHTML=
+
+groups.length
+
+?groups.map(g=>
+
+`<div
+class="between"
+style="padding:10px 0;border-bottom:1px solid var(--line)">
+
+<div>
+
+<b>
+${escapeHtml(g.name)}
+</b>
+
+<div class="small">
+${escapeHtml(g.invite_code)}
+</div>
+
+</div>
+
+<div class="actions">
+
+<button
+class="btn soft"
+onclick='switchGroup(${JSON.stringify(g.id)})'>
+abrir
+</button>
+
+<button
+class="btn ghost"
+onclick='copyCode(${JSON.stringify(g.invite_code)})'>
+copiar código
+</button>
+
+</div>
+
+</div>`
+
+).join("")
+
+:'<div class="muted">Você ainda não participa de nenhum grupo.</div>';
+
 }
-async function getMyGroups(){let {data}=await sb.from("group_members").select("group_id,groups(id,name,invite_code)").eq("user_id",user.id);return (data||[]).map(x=>x.groups).filter(Boolean)}
-async function switchGroup(id){if(!id)return; await selectGroup(id); renderAll();}
-function escapeHtml(v){return String(v??"").replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]))}
-async function copyCode(code){try{await navigator.clipboard.writeText(code);toast("Código copiado! ♡")}catch(e){prompt("Copie o código:",code)}}
-async function shareGroup(name,code){const text=`Entre no meu grupo Study Rats!\n\n${name}\nCódigo: ${code}`;if(navigator.share){try{await navigator.share({title:"Study Rats",text})}catch(e){}}else{await copyCode(code);}}
-function showNoGroup(){$("noGroup").classList.remove("hidden");$("homeContent").classList.add("hidden");$("groupSide").textContent="Sem grupo";if($("groupPicker"))$("groupPicker").innerHTML="<option value=\"\">Sem grupo</option>";if($("groupInfo"))$("groupInfo").innerHTML="<div class=\"muted\">Nenhum grupo selecionado.</div>";if($("allGroups"))$("allGroups").innerHTML=""}
-async function loadData(){let r=await Promise.all([sb.from("group_members").select("user_id,profiles(display_name)").eq("group_id",group.id),sb.from("study_logs").select("*").eq("group_id",group.id).order("created_at",{ascending:false}),sb.from("point_rules").select("*").eq("group_id",group.id).maybeSingle()]);members=r[0].data||[];logs=r[1].data||[];if(r[2].data)rules=r[2].data;renderAll()}
-function setupRealtime(){if(realtime)sb.removeChannel(realtime);realtime=sb.channel("study-rats-live").on("postgres_changes",{event:"*",schema:"public",table:"study_logs"},async payload=>{if(group&&((payload.new?.group_id===group.id)||(payload.old?.group_id===group.id)))await loadData()}).on("postgres_changes",{event:"*",schema:"public",table:"group_members"},async payload=>{if(group&&((payload.new?.group_id===group.id)||(payload.old?.group_id===group.id))){await loadData()}else{await loadGroup()}}).subscribe()}
-function nameOf(id){return members.find(x=>x.user_id==id)?.profiles?.display_name||"Study Rat"}
-function stats(uid,p){let st=periodStart(p),e=new Date();return logs.filter(s=>s.user_id==uid&&new Date(s.study_date+"T12:00")>=st&&new Date(s.study_date+"T12:00")<=e).reduce((a,s)=>(a.p+=pts(s),a.m+=+s.minutes,a.q+=+s.questions,a.l+=+s.lessons,a),{p:0,m:0,q:0,l:0})}
-function streak(uid){let n=0,d=new Date();while(logs.some(s=>s.user_id==uid&&s.study_date==d.toISOString().slice(0,10))){n++;d.setDate(d.getDate()-1)}return n}
-function renderAll(){let me=stats(user.id,"day"),w=stats(user.id,"week");$("myPts").textContent=me.p;$("myMin").textContent=fmt(me.m);$("myQ").textContent=me.q;$("myStreak").textContent=streak(user.id);$("weekMin").textContent=fmt(w.m);$("weekQ").textContent=w.q+" questões";$("weekBar").style.width=Math.min(100,w.m/300*100)+"%";$("qBar").style.width=Math.min(100,w.q/150*100)+"%";let arr=members.map(x=>({id:x.user_id,u:x.profiles.display_name,...stats(x.user_id,"day")})).sort((a,b)=>b.p-a.p);$("todayBoard").innerHTML=arr.map((x,i)=>`<div class="board"><span class="rank">${["🥇","🥈","🥉"][i]||i+1}</span><span class="avatar">${x.u[0]?.toUpperCase()||"S"}</span><div><b>${x.u}</b><div class="small">${fmt(x.m)} · ${x.q} questões</div></div><span class="pts">${x.p} pts</span></div>`).join("")||'<div class="muted">Ainda não há registros.</div>';$("feed").innerHTML=logs.slice(0,8).map(s=>`<div class="activity"><span class="avatar">${nameOf(s.user_id)[0]}</span><div><b>${nameOf(s.user_id)}</b> ${s.activity_type.toLowerCase()} <b>${s.subject||"estudo"}</b><div class="small">${s.study_date} · ${fmt(s.minutes)} · ${s.questions} questões</div></div><span class="pts">+${pts(s)}</span></div>`).join("")||'<div class="muted" style="padding:20px">O feed está esperando a primeira sessão ♡</div>';let y=stats(user.id,"year"),bs=[["🌱","Primeiro estudo",logs.some(s=>s.user_id==user.id)],["🔥","3 dias seguidos",streak(user.id)>=3],["💯","100 questões",y.q>=100],["⏳","10 horas",y.m>=600],["📚","10 aulas",y.l>=10],["👑","500 pontos",y.p>=500]];$("badges").innerHTML=bs.map(x=>`<span class="badge" style="opacity:${x[2]?1:.3}">${x[0]} ${x[1]}</span>`).join("");renderRanking();renderHistory();renderCalendar();renderChallenges();$("todayText").textContent=new Intl.DateTimeFormat("pt-BR",{dateStyle:"full"}).format(new Date())}
-function renderRanking(){let p=$("rankPeriod").value||"day",arr=members.map(x=>({u:x.profiles.display_name,...stats(x.user_id,p)})).sort((a,b)=>b.p-a.p);$("rankingTable").innerHTML=`<table><tr><th>#</th><th>Integrante</th><th>Pontos</th><th>Tempo</th><th>Questões</th><th>Aulas</th></tr>${arr.map((x,i)=>`<tr><td>${["🥇","🥈","🥉"][i]||i+1}</td><td><b>${x.u}</b></td><td><b>${x.p}</b></td><td>${fmt(x.m)}</td><td>${x.q}</td><td>${x.l}</td></tr>`).join("")}</table>`}
-function renderHistory(){$("history").innerHTML=logs.length?`<table><tr><th>Data</th><th>Pessoa</th><th>Matéria</th><th>Tempo</th><th>Questões</th><th>Pts</th></tr>${logs.map(s=>`<tr><td>${s.study_date}</td><td>${nameOf(s.user_id)}</td><td>${s.subject||"—"}</td><td>${fmt(s.minutes)}</td><td>${s.questions}/${s.correct}</td><td><b>${pts(s)}</b></td></tr>`).join("")}</table>`:'<div class="muted" style="padding:20px">Nenhum registro.</div>'}
-function renderCalendar(){let g=new Date();g.setDate(1);$("calTitle").textContent=g.toLocaleDateString("pt-BR",{month:"long",year:"numeric"});let first=g.getDay()||7,days=new Date(g.getFullYear(),g.getMonth()+1,0).getDate(),h="";for(let i=1;i<first;i++)h+="<div></div>";for(let d=1;d<=days;d++){let ds=`${g.getFullYear()}-${String(g.getMonth()+1).padStart(2,"0")}-${String(d).padStart(2,"0")}`,m=logs.filter(s=>s.user_id==user.id&&s.study_date==ds).reduce((a,s)=>a+s.minutes,0),bg=m>=180?"#70283b":m>=120?"#c98888":m>=60?"#e0bdb0":m?"#efdcd2":"#fffaf6";h+=`<div style="min-height:58px;border:1px solid var(--line);border-radius:10px;padding:7px;font-size:10px;background:${bg};color:${m>=180?"white":"var(--brown)"}"><b>${d}</b>${m?`<br>${fmt(m)}`:""}</div>`}$("calendarGrid").innerHTML=h}
-function renderChallenges(){$("challengeList").innerHTML='<div class="board"><div><b>Desafio 10 horas</b><div class="small">Chegar a 10h na semana</div></div><span class="pts">+100</span></div><div class="board"><div><b>Maratona de questões</b><div class="small">150 questões na semana</div></div><span class="pts">+100</span></div><div class="board"><div><b>Streak coletivo</b><div class="small">Todo mundo estudar por 5 dias</div></div><span class="pts">+150</span></div>'}
-async function saveStudy(){if(!group)return toast("Entre em um grupo primeiro.");let s={group_id:group.id,user_id:user.id,study_date:$("fDate").value||today(),subject:$("fSubject").value,minutes:+$("fMinutes").value||0,questions:+$("fQuestions").value||0,correct:+$("fCorrect").value||0,lessons:+$("fLessons").value||0,pomodoros:+$("fPom").value||0,activity_type:$("fType").value,note:$("fNote").value};if(!s.minutes&&!s.questions&&!s.lessons&&!s.pomodoros)return toast("Adicione alguma atividade.");let {error}=await sb.from("study_logs").insert(s);if(error)return toast(error.message);$("fSubject").value="";$("fNote").value="";toast(`+${pts(s)} pontos! ♡`);await loadData();showPage("home")}
-async function saveProfile(){let n=$("profileName").value.trim();if(!n)return;let {error}=await sb.from("profiles").update({display_name:n}).eq("id",user.id);if(error)return toast(error.message);await loadProfile();await loadData();toast("Perfil salvo ♡")}
-function openGroup(mode){$("groupModal").classList.add("open");$("groupCreate").classList.toggle("hidden",mode!="create");$("groupJoin").classList.toggle("hidden",mode!="join");$("groupTitle").textContent=mode=="create"?"Criar grupo":"Entrar com código";$("groupMsg").textContent=""}
-function closeGroup(){$("groupModal").classList.remove("open")}
+
+
+async function selectGroup(id,groups){
+
+const list=
+groups||await getMyGroups();
+
+const g=list.find(x=>x.id===id);
+
+if(!g)return;
+
+group=g;
+
+localStorage.setItem(
+"study_rats_group",
+g.id
+);
+
+
+$("groupPicker").value=g.id;
+
+$("groupSide").textContent=
+g.name+" · "+g.invite_code;
+
+
+let isOwner=
+g.created_by &&
+g.created_by===user.id;
+
+
+$("groupInfo").innerHTML=
+
+`<div class="between">
+
+<div>
+
+<b style="font-size:18px">
+${escapeHtml(g.name)}
+</b>
+
+<div class="small">
+Código de convite
+</div>
+
+</div>
+
+<span class="pill">
+${escapeHtml(g.invite_code)}
+</span>
+
+</div>
+
+<div
+class="actions"
+style="margin-top:12px">
+
+<button
+class="btn soft"
+onclick='copyCode(${JSON.stringify(g.invite_code)})'>
+📋 Copiar código
+</button>
+
+<button
+class="btn ghost"
+onclick='shareGroup(${JSON.stringify(g.name)},${JSON.stringify(g.invite_code)})'>
+💌 Compartilhar
+</button>
+
+${
+isOwner
+?
+`<button
+class="btn danger"
+onclick="deleteGroup()">
+🗑️ Excluir grupo
+</button>`
+:""
+
+}
+
+</div>`;
+
+
+$("noGroup").classList.add("hidden");
+
+$("homeContent").classList.remove("hidden");
+
+await loadData();
+
+}
+
+
+async function getMyGroups(){
+
+let {data}=await sb
+.from("group_members")
+.select("group_id,groups(id,name,invite_code,created_by)")
+.eq("user_id",user.id);
+
+return (data||[])
+.map(x=>x.groups)
+.filter(Boolean);
+
+}
+
+
+async function switchGroup(id){
+
+if(!id)return;
+
+await selectGroup(id);
+
+renderAll();
+
+}
+
+
+function escapeHtml(v){
+
+return String(v??"")
+.replace(
+/[&<>"']/g,
+c=>({
+'&':'&amp;',
+'<':'&lt;',
+'>':'&gt;',
+'"':'&quot;',
+"'":'&#039;'
+}[c])
+);
+
+}
+
+
+async function copyCode(code){
+
+try{
+
+await navigator.clipboard.writeText(code);
+
+toast("Código copiado! ♡");
+
+}catch(e){
+
+prompt(
+"Copie o código:",
+code
+);
+
+}
+
+}
+
+
+async function shareGroup(name,code){
+
+const text=
+`Entre no meu grupo Study Rats!
+
+${name}
+
+Código: ${code}`;
+
+
+if(navigator.share){
+
+try{
+
+await navigator.share({
+title:"Study Rats",
+text
+});
+
+}catch(e){}
+
+}else{
+
+await copyCode(code);
+
+}
+
+}
+
+
+function showNoGroup(){
+
+$("noGroup").classList.remove("hidden");
+
+$("homeContent").classList.add("hidden");
+
+$("groupSide").textContent="Sem grupo";
+
+if($("groupPicker"))
+$("groupPicker").innerHTML=
+"<option value=\"\">Sem grupo</option>";
+
+if($("groupInfo"))
+$("groupInfo").innerHTML=
+"<div class=\"muted\">Nenhum grupo selecionado.</div>";
+
+if($("allGroups"))
+$("allGroups").innerHTML="";
+
+}
+
+
+async function loadData(){
+
+let r=await Promise.all([
+
+sb
+.from("group_members")
+.select("user_id,profiles(display_name)")
+.eq("group_id",group.id),
+
+sb
+.from("study_logs")
+.select("*")
+.eq("group_id",group.id)
+.order("created_at",{ascending:false}),
+
+sb
+.from("point_rules")
+.select("*")
+.eq("group_id",group.id)
+.maybeSingle()
+
+]);
+
+
+members=r[0].data||[];
+
+logs=r[1].data||[];
+
+if(r[2].data)
+rules=r[2].data;
+
+renderAll();
+
+}
+
+
+function setupRealtime(){
+
+if(realtime)
+sb.removeChannel(realtime);
+
+
+realtime=
+sb
+.channel("study-rats-live")
+
+.on(
+"postgres_changes",
+{
+event:"*",
+schema:"public",
+table:"study_logs"
+},
+async payload=>{
+
+if(
+group &&
+(
+payload.new?.group_id===group.id||
+payload.old?.group_id===group.id
+)
+)
+await loadData();
+
+}
+)
+
+.on(
+"postgres_changes",
+{
+event:"*",
+schema:"public",
+table:"group_members"
+},
+async payload=>{
+
+if(
+group &&
+(
+payload.new?.group_id===group.id||
+payload.old?.group_id===group.id
+)
+){
+
+await loadData();
+
+}else{
+
+await loadGroup();
+
+}
+
+}
+)
+
+.subscribe();
+
+}
+
+
+function nameOf(id){
+
+return members.find(
+x=>x.user_id==id
+)?.profiles?.display_name||
+"Study Rat";
+
+}
+
+
+function stats(uid,p){
+
+let st=periodStart(p);
+
+let e=new Date();
+
+
+return logs
+.filter(
+s=>
+s.user_id==uid &&
+new Date(
+s.study_date+"T12:00"
+)>=st &&
+new Date(
+s.study_date+"T12:00"
+)<=e
+)
+.reduce(
+(a,s)=>(
+a.p+=pts(s),
+a.m+=+s.minutes,
+a.q+=+s.questions,
+a.l+=+s.lessons,
+a
+),
+{
+p:0,
+m:0,
+q:0,
+l:0
+}
+);
+
+}
+
+
+function streak(uid){
+
+let n=0;
+
+let d=new Date();
+
+
+while(
+logs.some(
+s=>
+s.user_id==uid &&
+s.study_date==
+d.toISOString().slice(0,10)
+)
+){
+
+n++;
+
+d.setDate(
+d.getDate()-1
+);
+
+}
+
+return n;
+
+}
+
+
+function renderAll(){
+
+if(!group)return;
+
+
+let me=stats(
+user.id,
+"day"
+);
+
+let w=stats(
+user.id,
+"week"
+);
+
+
+$("myPts").textContent=me.p;
+
+$("myMin").textContent=fmt(me.m);
+
+$("myQ").textContent=me.q;
+
+$("myStreak").textContent=
+streak(user.id);
+
+$("weekMin").textContent=
+fmt(w.m);
+
+$("weekQ").textContent=
+w.q+" questões";
+
+$("weekBar").style.width=
+Math.min(
+100,
+w.m/300*100
+)+"%";
+
+$("qBar").style.width=
+Math.min(
+100,
+w.q/150*100
+)+"%";
+
+
+let arr=
+members
+.map(
+x=>({
+id:x.user_id,
+u:x.profiles?.display_name||"Study Rat",
+...stats(x.user_id,"day")
+})
+)
+.sort(
+(a,b)=>b.p-a.p
+);
+
+
+$("todayBoard").innerHTML=
+
+arr.map(
+(x,i)=>
+`<div class="board">
+
+<span class="rank">
+${["🥇","🥈","🥉"][i]||i+1}
+</span>
+
+<span class="avatar">
+${x.u[0]?.toUpperCase()||"S"}
+</span>
+
+<div>
+
+<b>${escapeHtml(x.u)}</b>
+
+<div class="small">
+${fmt(x.m)} · ${x.q} questões
+</div>
+
+</div>
+
+<span class="pts">
+${x.p} pts
+</span>
+
+</div>`
+).join("")
+
+||
+'<div class="muted">Ainda não há registros.</div>';
+
+
+$("feed").innerHTML=
+
+logs.slice(0,8)
+.map(
+s=>
+`<div class="activity">
+
+<span class="avatar">
+${nameOf(s.user_id)[0]}
+</span>
+
+<div>
+
+<b>${escapeHtml(nameOf(s.user_id))}</b>
+${s.activity_type.toLowerCase()}
+<b>${escapeHtml(s.subject||"estudo")}</b>
+
+<div class="small">
+${s.study_date} ·
+${fmt(s.minutes)} ·
+${s.questions} questões
+</div>
+
+</div>
+
+<span class="pts">
++${pts(s)}
+</span>
+
+</div>`
+).join("")
+
+||
+'<div class="muted" style="padding:20px">
+O feed está esperando a primeira sessão ♡
+</div>';
+
+
+let y=stats(
+user.id,
+"year"
+);
+
+
+let bs=[
+["🌱","Primeiro estudo",
+logs.some(s=>s.user_id==user.id)],
+["🔥","3 dias seguidos",
+streak(user.id)>=3],
+["💯","100 questões",
+y.q>=100],
+["⏳","10 horas",
+y.m>=600],
+["📚","10 aulas",
+y.l>=10],
+["👑","500 pontos",
+y.p>=500]
+];
+
+
+$("badges").innerHTML=
+
+bs.map(
+x=>
+`<span
+class="badge"
+style="opacity:${x[2]?1:.3}">
+${x[0]} ${x[1]}
+</span>`
+).join("");
+
+
+renderRanking();
+renderHistory();
+renderCalendar();
+renderChallenges();
+
+
+$("todayText").textContent=
+new Intl.DateTimeFormat(
+"pt-BR",
+{dateStyle:"full"}
+).format(new Date());
+
+}
+
+
+function renderRanking(){
+
+if(!group)return;
+
+let p=$("rankPeriod").value||"day";
+
+
+let arr=
+members
+.map(
+x=>({
+u:x.profiles?.display_name||"Study Rat",
+...stats(x.user_id,p)
+})
+)
+.sort(
+(a,b)=>b.p-a.p
+);
+
+
+$("rankingTable").innerHTML=
+
+`<table>
+
+<tr>
+<th>#</th>
+<th>Integrante</th>
+<th>Pontos</th>
+<th>Tempo</th>
+<th>Questões</th>
+<th>Aulas</th>
+</tr>
+
+${
+arr.map(
+(x,i)=>
+`<tr>
+
+<td>
+${["🥇","🥈","🥉"][i]||i+1}
+</td>
+
+<td>
+<b>${escapeHtml(x.u)}</b>
+</td>
+
+<td>
+<b>${x.p}</b>
+</td>
+
+<td>
+${fmt(x.m)}
+</td>
+
+<td>
+${x.q}
+</td>
+
+<td>
+${x.l}
+</td>
+
+</tr>`
+).join("")
+}
+
+</table>`;
+
+}
+
+
+function renderHistory(){
+
+$("history").innerHTML=
+
+logs.length
+
+?
+
+`<table>
+
+<tr>
+<th>Data</th>
+<th>Pessoa</th>
+<th>Matéria</th>
+<th>Tempo</th>
+<th>Questões</th>
+<th>Pts</th>
+</tr>
+
+${
+logs.map(
+s=>
+`<tr>
+
+<td>${s.study_date}</td>
+
+<td>${escapeHtml(nameOf(s.user_id))}</td>
+
+<td>${escapeHtml(s.subject||"—")}</td>
+
+<td>${fmt(s.minutes)}</td>
+
+<td>${s.questions}/${s.correct}</td>
+
+<td><b>${pts(s)}</b></td>
+
+</tr>`
+).join("")
+}
+
+</table>`
+
+:
+
+'<div class="muted" style="padding:20px">Nenhum registro.</div>';
+
+}
+
+
+function renderCalendar(){
+
+let g=new Date();
+
+g.setDate(1);
+
+
+$("calTitle").textContent=
+g.toLocaleDateString(
+"pt-BR",
+{
+month:"long",
+year:"numeric"
+}
+);
+
+
+let first=g.getDay()||7;
+
+let days=
+new Date(
+g.getFullYear(),
+g.getMonth()+1,
+0
+).getDate();
+
+
+let h="";
+
+
+for(
+let i=1;
+i<first;
+i++
+)
+h+="<div></div>";
+
+
+for(
+let d=1;
+d<=days;
+d++
+){
+
+let ds=
+`${g.getFullYear()}-${String(g.getMonth()+1).padStart(2,"0")}-${String(d).padStart(2,"0")}`;
+
+let m=
+logs
+.filter(
+s=>
+s.user_id==user.id &&
+s.study_date==ds
+)
+.reduce(
+(a,s)=>a+s.minutes,
+0
+);
+
+
+let bg=
+m>=180
+?"#70283b"
+:m>=120
+?"#c98888"
+:m>=60
+?"#e0bdb0"
+:m
+?"#efdcd2"
+:"#fffaf6";
+
+
+h+=
+`<div
+style="
+min-height:58px;
+border:1px solid var(--line);
+border-radius:10px;
+padding:7px;
+font-size:10px;
+background:${bg};
+color:${m>=180?"white":"var(--brown)"}
+">
+
+<b>${d}</b>
+
+${m?`<br>${fmt(m)}`:""}
+
+</div>`;
+
+}
+
+
+$("calendarGrid").innerHTML=h;
+
+}
+
+
+function renderChallenges(){
+
+$("challengeList").innerHTML=
+
+'<div class="board"><div><b>Desafio 10 horas</b><div class="small">Chegar a 10h na semana</div></div><span class="pts">+100</span></div>'+
+
+'<div class="board"><div><b>Maratona de questões</b><div class="small">150 questões na semana</div></div><span class="pts">+100</span></div>'+
+
+'<div class="board"><div><b>Streak coletivo</b><div class="small">Todo mundo estudar por 5 dias</div></div><span class="pts">+150</span></div>';
+
+}
+
+
+async function saveStudy(){
+
+if(!group)
+return toast(
+"Entre em um grupo primeiro."
+);
+
+
+let s={
+
+group_id:group.id,
+
+user_id:user.id,
+
+study_date:
+$("fDate").value||today(),
+
+subject:
+$("fSubject").value,
+
+minutes:
++$("fMinutes").value||0,
+
+questions:
++$("fQuestions").value||0,
+
+correct:
++$("fCorrect").value||0,
+
+lessons:
++$("fLessons").value||0,
+
+pomodoros:
++$("fPom").value||0,
+
+activity_type:
+$("fType").value,
+
+note:
+$("fNote").value
+
+};
+
+
+if(
+!s.minutes &&
+!s.questions &&
+!s.lessons &&
+!s.pomodoros
+)
+return toast(
+"Adicione alguma atividade."
+);
+
+
+let {error}=await sb
+.from("study_logs")
+.insert(s);
+
+
+if(error)
+return toast(error.message);
+
+
+$("fSubject").value="";
+$("fNote").value="";
+
+
+toast(
+`+${pts(s)} pontos! ♡`
+);
+
+
+await loadData();
+
+showPage("home");
+
+}
+
+
+async function saveProfile(){
+
+let n=
+$("profileName").value.trim();
+
+if(!n)return;
+
+
+let {error}=await sb
+.from("profiles")
+.update({
+display_name:n
+})
+.eq("id",user.id);
+
+
+if(error)
+return toast(error.message);
+
+
+await loadProfile();
+
+await loadData();
+
+toast("Perfil salvo ♡");
+
+}
+
+
+function openGroup(mode){
+
+$("groupModal").classList.add("open");
+
+$("groupCreate")
+.classList.toggle(
+"hidden",
+mode!="create"
+);
+
+$("groupJoin")
+.classList.toggle(
+"hidden",
+mode!="join"
+);
+
+$("groupTitle").textContent=
+mode=="create"
+?"Criar grupo"
+:"Entrar com código";
+
+$("groupMsg").textContent="";
+
+}
+
+
+function closeGroup(){
+
+$("groupModal")
+.classList.remove("open");
+
+}
+
+
 async function createGroup(){
-  let n=$("groupName").value.trim();
-  if(!n)return msg("groupMsg","Digite um nome para o grupo.");
-  let {data,error}=await sb.rpc("create_study_group",{p_name:n});
-  if(error)return msg("groupMsg",error.message);
-  closeGroup();
-  if(data?.id)localStorage.setItem("study_rats_group",data.id);
-  await loadGroup();
-  toast("Grupo criado! ♡");
+
+let n=
+$("groupName").value.trim();
+
+
+if(!n)
+return msg(
+"groupMsg",
+"Digite um nome para o grupo."
+);
+
+
+let {
+data,
+error
+}=await sb.rpc(
+"create_study_group",
+{
+p_name:n
 }
+);
+
+
+if(error)
+return msg(
+"groupMsg",
+error.message
+);
+
+
+let groupId=data?.id;
+
+
+if(!groupId){
+
+let {data:found,error:findError}=await sb
+.from("groups")
+.select("id,name,invite_code,created_by")
+.eq("name",n)
+.order("created_at",{ascending:false})
+.limit(1)
+.maybeSingle();
+
+
+if(findError)
+return msg(
+"groupMsg",
+findError.message
+);
+
+groupId=found?.id;
+
+}
+
+
+if(!groupId)
+return msg(
+"groupMsg",
+"Grupo criado, mas não consegui localizar o grupo."
+);
+
+
+localStorage.setItem(
+"study_rats_group",
+groupId
+);
+
+
+let {data:newGroup,error:groupError}=
+await sb
+.from("groups")
+.select("id,name,invite_code,created_by")
+.eq("id",groupId)
+.single();
+
+
+if(groupError)
+return msg(
+"groupMsg",
+groupError.message
+);
+
+
+createdGroupForShare=newGroup;
+
+
+closeGroup();
+
+
+$("createdCode").textContent=
+newGroup.invite_code;
+
+
+$("codeModal")
+.classList.add("open");
+
+
+await loadGroup();
+
+
+toast(
+"Grupo criado! ♡"
+);
+
+}
+
+
+function closeCodeModal(){
+
+$("codeModal")
+.classList.remove("open");
+
+createdGroupForShare=null;
+
+}
+
+
+async function copyCreatedCode(){
+
+if(!createdGroupForShare)return;
+
+await copyCode(
+createdGroupForShare.invite_code
+);
+
+}
+
+
+async function shareCreatedGroup(){
+
+if(!createdGroupForShare)return;
+
+await shareGroup(
+createdGroupForShare.name,
+createdGroupForShare.invite_code
+);
+
+}
+
+
 async function joinGroup(){
-  let c=$("inviteCode").value.trim().toUpperCase();
-  if(!c)return msg("groupMsg","Digite o código do grupo.");
-  let {data,error}=await sb.rpc("join_study_group",{p_code:c});
-  if(error)return msg("groupMsg",error.message);
-  closeGroup();
-  if(data?.id)localStorage.setItem("study_rats_group",data.id);
-  await loadGroup();
-  toast("Você entrou no grupo! ♡");
+
+let c=
+$("inviteCode")
+.value
+.trim()
+.toUpperCase();
+
+
+if(!c)
+return msg(
+"groupMsg",
+"Digite o código do grupo."
+);
+
+
+let {
+data,
+error
+}=await sb.rpc(
+"join_study_group",
+{
+p_code:c
 }
-async function logout(){await sb.auth.signOut();location.reload()}
-function showPage(id){document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));$(id).classList.add("active");document.querySelectorAll(".nav button").forEach(x=>x.classList.toggle("active",x.dataset.page==id));renderAll()}
-document.querySelectorAll(".nav button").forEach(b=>b.onclick=()=>showPage(b.dataset.page));
-function toast(t){let x=$("toast");x.textContent=t;x.style.display="block";setTimeout(()=>x.style.display="none",2400)}
-function openRoom(){let n=$("roomName").value.trim()||"study-rats-"+Math.random().toString(36).slice(2,8);window.open("https://meet.jit.si/"+encodeURIComponent(n),"_blank")}
-let timer={sec:1500,base:25,run:false,id:null};function draw(){let m=Math.floor(timer.sec/60),s=timer.sec%60;$("clock").textContent=String(m).padStart(2,"0")+":"+String(s).padStart(2,"0")}function setTimer(m){clearInterval(timer.id);timer={sec:m*60,base:m,run:false,id:null};$("timerMode").textContent=m+" min · foco";$("timerButton").textContent="começar";draw()}function resetTimer(){setTimer(timer.base)}function toggleTimer(){if(timer.run){clearInterval(timer.id);timer.run=false;$("timerButton").textContent="continuar";return}timer.run=true;$("timerButton").textContent="pausar";timer.id=setInterval(()=>{timer.sec--;draw();if(timer.sec<=0){clearInterval(timer.id);timer.run=false;$("timerButton").textContent="começar";$("fMinutes").value=timer.base;$("fPom").value=1;showPage("register");toast("Pomodoro concluído! 🍅 Registre para pontuar.")}},1000)}draw();
-sb.auth.getSession().then(({data})=>{if(data.session)boot(data.session)});sb.auth.onAuthStateChange((_e,s)=>{if(s&&!user)boot(s)});
+);
+
+
+if(error)
+return msg(
+"groupMsg",
+error.message
+);
+
+
+closeGroup();
+
+
+if(data?.id)
+localStorage.setItem(
+"study_rats_group",
+data.id
+);
+
+
+await loadGroup();
+
+
+toast(
+"Você entrou no grupo! ♡"
+);
+
+}
+
+
+/* =========================================================
+   EXCLUIR GRUPO
+   ========================================================= */
+
+async function deleteGroup(){
+
+if(!group)
+return toast(
+"Nenhum grupo selecionado."
+);
+
+
+/*
+Verifica se a pessoa atual é realmente a dona.
+*/
+if(
+group.created_by &&
+group.created_by!==user.id
+){
+
+return toast(
+"Somente a criadora pode excluir este grupo."
+);
+
+}
+
+
+const firstConfirm=
+confirm(
+"⚠️ EXCLUIR GRUPO?\n\n"+
+"Você está prestes a excluir:\n\n"+
+group.name+
+"\n\n"+
+"Todos os estudos, integrantes e dados deste grupo serão apagados.\n\n"+
+"Essa ação não pode ser desfeita."
+);
+
+
+if(!firstConfirm)return;
+
+
+const typed=
+prompt(
+'Para confirmar a exclusão, digite exatamente:\n\nEXCLUIR'
+);
+
+
+if(typed!=="EXCLUIR"){
+
+toast(
+"Exclusão cancelada."
+);
+
+return;
+
+}
+
+
+const button=document.querySelector(
+'button[onclick="deleteGroup()"]'
+);
+
+
+if(button)
+button.disabled=true;
+
+
+let {
+data,
+error
+}=await sb.rpc(
+"delete_study_group",
+{
+p_group_id:group.id
+}
+);
+
+
+if(button)
+button.disabled=false;
+
+
+if(error){
+
+console.error(error);
+
+toast(
+error.message
+);
+
+return;
+
+}
+
+
+localStorage.removeItem(
+"study_rats_group"
+);
+
+
+group=null;
+
+members=[];
+
+logs=[];
+
+
+showNoGroup();
+
+
+await loadGroup();
+
+
+showPage("home");
+
+
+toast(
+"Grupo excluído com sucesso. ♡"
+);
+
+}
+
+
+async function logout(){
+
+await sb.auth.signOut();
+
+location.reload();
+
+}
+
+
+function showPage(id){
+
+document
+.querySelectorAll(".page")
+.forEach(
+x=>x.classList.remove("active")
+);
+
+
+$(id).classList.add("active");
+
+
+document
+.querySelectorAll(".nav button")
+.forEach(
+x=>
+x.classList.toggle(
+"active",
+x.dataset.page==id
+)
+);
+
+
+if(group)
+renderAll();
+
+}
+
+
+document
+.querySelectorAll(".nav button")
+.forEach(
+b=>
+b.onclick=()=>
+showPage(b.dataset.page)
+);
+
+
+function toast(t){
+
+let x=$("toast");
+
+x.textContent=t;
+
+x.style.display="block";
+
+setTimeout(
+()=>x.style.display="none",
+2400
+);
+
+}
+
+
+function openRoom(){
+
+let n=
+$("roomName").value.trim()||
+"study-rats-"+
+Math.random()
+.toString(36)
+.slice(2,8);
+
+
+window.open(
+"https://meet.jit.si/"+
+encodeURIComponent(n),
+"_blank"
+);
+
+}
+
+
+let timer={
+sec:1500,
+base:25,
+run:false,
+id:null
+};
+
+
+function draw(){
+
+let m=
+Math.floor(timer.sec/60);
+
+let s=
+timer.sec%60;
+
+
+$("clock").textContent=
+String(m).padStart(2,"0")+
+":"+
+String(s).padStart(2,"0");
+
+}
+
+
+function setTimer(m){
+
+clearInterval(timer.id);
+
+timer={
+sec:m*60,
+base:m,
+run:false,
+id:null
+};
+
+
+$("timerMode").textContent=
+m+" min · foco";
+
+$("timerButton").textContent=
+"começar";
+
+draw();
+
+}
+
+
+function resetTimer(){
+
+setTimer(
+timer.base
+);
+
+}
+
+
+function toggleTimer(){
+
+if(timer.run){
+
+clearInterval(timer.id);
+
+timer.run=false;
+
+$("timerButton").textContent=
+"continuar";
+
+return;
+
+}
+
+
+timer.run=true;
+
+$("timerButton").textContent=
+"pausar";
+
+
+timer.id=
+setInterval(
+()=>{
+
+timer.sec--;
+
+draw();
+
+
+if(timer.sec<=0){
+
+clearInterval(timer.id);
+
+timer.run=false;
+
+$("timerButton").textContent=
+"começar";
+
+$("fMinutes").value=
+timer.base;
+
+$("fPom").value=1;
+
+showPage("register");
+
+toast(
+"Pomodoro concluído! 🍅 Registre para pontuar."
+);
+
+}
+
+},
+1000
+);
+
+}
+
+
+draw();
+
+
+sb.auth
+.getSession()
+.then(
+({data})=>{
+if(data.session)
+boot(data.session)
+}
+);
+
+
+sb.auth
+.onAuthStateChange(
+(_e,s)=>{
+if(s&&!user)
+boot(s)
+}
+);
+
 </script>
-</body></html>
+
+</body>
+</html>
+```
